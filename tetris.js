@@ -131,10 +131,25 @@ var detectCollision = function( x, y ) {
 // If a collision is detected ( floor or other blocks ) we want our player to lose control of their piece, and all the blocks to stick where they are.
 var stickPiece = function() {};
 
+
+var randomPiece = function ( ) {
+  var index = Math.floor(Math.random()*6);
+  return pieces[index];
+
+};
+
+
 var newPiece = function() {
   playerPiece.piece = playerPiece.nextPiece;
-  playerPiece.x = 0;
+  playerPiece.x = 4;
   playerPiece.y = 0;
+  playerPiece.nextPiece = randomPiece();
+
+
+
+
+
+
 }; // handle getting a player a new piece and re-initializing it.
 
 // constantly move playerPiece downward.
@@ -148,10 +163,10 @@ var gravity = function() {
   }
 };
 
-playerPiece.piece = long;
+playerPiece.piece = randomPiece();
 playerPiece.x = 5;
 playerPiece.y = 0;
-
+playerPiece.nextPiece = randomPiece();
 
 
 // drawPiece( long, 3, 3 );
