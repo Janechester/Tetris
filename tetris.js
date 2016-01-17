@@ -34,6 +34,12 @@ Pieces
 Require: jQuery
 */
 /* Graphics */
+var yellow = '#ff0';
+var blue = '#87CEFA';
+var red = '#DC143C';
+var green = '#98FB98';
+var orange = '#F4A460';
+var purple = '#9400D3';
 var playField = [];
 var blockSize = 20;
 var canvasHeight = blockSize * 22;
@@ -66,8 +72,14 @@ var Block = function( x, y, color ) {
   this.color = color || '#fff';
 };
 
-playField.push( new Block( 0, 0 ) );
-playField.push( new Block( 5, 5 ) );
-playField.push( new Block( 3, 3, '#ff0') );
+var Piece = function( blockMap, color ) {
+  this.blockMap = blockMap;
+  this.color = color;
+};
+
+
+playField.push( new Block( 0, 0, purple ) );
+playField.push( new Block( 5, 5, red ) );
+playField.push( new Block( 3, 3, yellow ) );
 
 setInterval( drawField, 10 );
