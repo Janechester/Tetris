@@ -76,6 +76,17 @@ var Block = function( x, y, color ) {
 var Piece = function( blockMap, color ) {
   this.blockMap = blockMap;
   this.color = color;
+  this.orientation = 0;
+};
+
+Piece.prototype.findLowestBlock = function() {
+  var y = 0;
+  this.blockMap.forEach( function( coord ) { 
+    if( coord[1] > y ) {
+      y = coord[1];
+    }
+  } );
+  return y;
 };
 
 var long = new Piece( [ [ 0, 0 ], [ 0, 1 ], [ 0, 2 ], [ 0, 3 ] ], blue );
@@ -85,6 +96,7 @@ var righty = new Piece( [ [ 1, 0 ], [ 0, 1 ], [ 1, 1 ], [ 0, 2 ] ], green );
 var leftL = new Piece( [ [ 0, 0 ], [ 1, 0 ], [ 1, 1 ], [ 1, 2 ] ], red );
 var rightL = new Piece( [ [ 1, 0 ], [ 0, 0 ], [ 0, 1 ], [ 0, 2] ], orange );
 var tPiece = new Piece( [ [ 0, 0 ], [ 0, 1 ], [ 0, 2 ], [ 1, 1 ] ], white );
+var pieces = [long, square, lefty, righty, leftL, rightL, tPiece];
 
 var drawPiece = function( piece, x, y ) {
   var blockMap = piece.blockMap;
@@ -99,11 +111,11 @@ var drawPiece = function( piece, x, y ) {
   } );
 };
 
+
 var playerPiece = {
   // 'piece': Piece object
   // 'x': x location
   // 'y': y location
-  // 'orientation': orientation 0 1 2 3
   // 'nextPiece': whatever the next Piece object is
 };
 
@@ -119,10 +131,20 @@ var detectCollision = function( x, y ) {
 // If a collision is detected ( floor or other blocks ) we want our player to lose control of their piece, and all the blocks to stick where they are.
 var stickPiece = function() {};
 
+var newPiece = function() {
+  playerPiece.piece = playerPiece.nextPiece;
+  playerPiece.x = 0;
+  playerPiece.y = 0;
+}; // handle getting a player a new piece and re-initializing it.
+
 // constantly move playerPiece downward.
 var gravity = function() {
-  if( !detectCollision( playerPiece.x, playerPiece.y ) ) {
+  var lowest = 1 + playerPiece.piece.findLowestBlock() + playerPiece.y;
+  if( !detectCollision( playerPiece.x, lowest ) ) {
     playerPiece.y = playerPiece.y + 1;
+  } else {
+    stickPiece();
+    newPiece();
   }
 };
 
@@ -142,4 +164,4 @@ playerPiece.y = 0;
 // playField.push( new Block( 5, 5, red ) );
 // playField.push( new Block( 3, 3, yellow ) );
 
-setInterval( drawField, 1000 );
+setInterval( drawField, 700 );
