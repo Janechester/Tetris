@@ -33,6 +33,8 @@ Pieces
 
 Require: jQuery
 */
+/* Graphics */
+var playField = [];
 var blockSize = 20;
 var canvasHeight = blockSize * 22;
 var canvasWidth = blockSize * 10;
@@ -49,7 +51,23 @@ var drawBlock = function( x, y, color ) {
   ctx.closePath();
 };
 
-drawBlock( 3, 3 );
-drawBlock( 4, 3 );
-drawBlock( 5, 3 );
-drawBlock( 6, 3 );
+var drawField = function() {
+  ctx.clearRect( 0, 0, canvasWidth, canvasHeight );
+  playField.forEach( function( block ) {
+    drawBlock( block.x, block.y, block.color );
+  } );
+};
+
+/* Game State */
+
+var Block = function( x, y, color ) {
+  this.x = x;
+  this.y = y;
+  this.color = color || '#fff';
+};
+
+playField.push( new Block( 0, 0 ) );
+playField.push( new Block( 5, 5 ) );
+playField.push( new Block( 3, 3, '#ff0') );
+
+setInterval( drawField, 10 );
