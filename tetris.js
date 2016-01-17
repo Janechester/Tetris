@@ -33,13 +33,14 @@ Pieces
 
 Require: jQuery
 */
-/* Graphics */
 var yellow = '#ff0';
 var blue = '#87CEFA';
 var red = '#DC143C';
 var green = '#98FB98';
 var orange = '#F4A460';
 var purple = '#9400D3';
+var white = '#fff';
+
 var playField = [];
 var blockSize = 20;
 var canvasHeight = blockSize * 22;
@@ -64,8 +65,6 @@ var drawField = function() {
   } );
 };
 
-/* Game State */
-
 var Block = function( x, y, color ) {
   this.x = x;
   this.y = y;
@@ -77,9 +76,35 @@ var Piece = function( blockMap, color ) {
   this.color = color;
 };
 
+var long = new Piece( [ [ 0, 0 ], [ 0, 1 ], [ 0, 2 ], [ 0, 3 ] ], blue );
+var square = new Piece( [ [ 0, 0 ], [ 0, 1 ], [ 1, 0 ], [ 1, 1 ] ], yellow );
+var lefty = new Piece( [ [ 0, 0 ], [ 0, 1 ], [ 1, 1 ], [ 1, 2 ] ], purple );
+var righty = new Piece( [ [ 1, 0 ], [ 0, 1 ], [ 1, 1 ], [ 0, 2 ] ], green );
+var leftL = new Piece( [ [ 0, 0 ], [ 1, 0 ], [ 1, 1 ], [ 1, 2 ] ], red );
+var rightL = new Piece( [ [ 1, 0 ], [ 0, 0 ], [ 0, 1 ], [ 0, 2] ], orange );
+var tPiece = new Piece( [ [ 0, 0 ], [ 0, 1 ], [ 0, 2 ], [ 1, 1 ] ], white );
+
+var drawPiece = function( piece, x, y ) {
+  var blockMap = piece.blockMap;
+  var color = piece.color;
+  blockMap.forEach( function( coord ) {
+    var tempX = coord[0] + x;
+    var tempY = coord[1] + y;
+    if( tempY > 21 ) {
+      alert( 'Piece out of bounds' );
+    }
+    drawBlock( tempX, tempY, color );
+  } );
+};
+
+drawPiece( long, 3, 3 );
+drawPiece( square, 3, 20 );
+drawPiece( leftL, 5, 6 );
+drawPiece( rightL, 4, 15 );
+drawPiece( tPiece, 0, 19 );
 
 playField.push( new Block( 0, 0, purple ) );
 playField.push( new Block( 5, 5, red ) );
 playField.push( new Block( 3, 3, yellow ) );
 
-setInterval( drawField, 10 );
+// setInterval( drawField, 10 );
