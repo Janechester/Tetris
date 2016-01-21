@@ -148,6 +148,10 @@ var newPiece = function() {
 
 
 
+$(window).on("keydown", drawField);
+
+
+
 
 
 }; // handle getting a player a new piece and re-initializing it.
