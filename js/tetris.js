@@ -49,8 +49,8 @@ var playField = [];
 var blockSize = 20;
 var canvasHeight = blockSize * 22;
 var canvasWidth = blockSize * 10;
-var $canvas = $('<canvas id="playArea" width="' + canvasWidth + '" height="' + canvasHeight + '"></canvas>');
-$canvas.appendTo( $( '.tetris' ) );
+var $canvas = $('<canvas id="playArea" width="' + canvasWidth + '" height="' + canvasHeight + '"></canvas>')
+$canvas.appendTo( $('body') );
 var ctx = $canvas[0].getContext('2d');
 
 var drawBlock = function( x, y, color ) {
@@ -85,7 +85,7 @@ var Piece = function( blockMap, color ) {
 
 Piece.prototype.findLowestBlock = function() {
   var y = 0;
-  this.blockMap.forEach( function( coord ) {
+  this.blockMap.forEach( function( coord ) { 
     if( coord[1] > y ) {
       y = coord[1];
     }
@@ -149,6 +149,25 @@ var newPiece = function() {
   playerPiece.y = 0;
   playerPiece.nextPiece = randomPiece();
 
+
+
+
+$( window ).on( "keypress", function(e) {
+  if( e.which === LEFT_ARROW ) {
+    // move piece left
+  } else if ( e.which === RIGHT_ARROW ) {
+    // move piece right
+  } else if ( e.which === UP_ARROW ) {
+    // rotate piece
+  } else if( e.which === DOWN_ARROW ) {
+    drawField();
+  }
+} );
+
+
+
+
+
 }; // handle getting a player a new piece and re-initializing it.
 
 // constantly move playerPiece downward.
@@ -161,18 +180,6 @@ var gravity = function() {
     newPiece();
   }
 };
-
-$( document ).on( 'keypress', function(e) {
-  if( e.which === LEFT_ARROW ) {
-    // move piece left
-  } else if ( e.which === RIGHT_ARROW ) {
-    // move piece right
-  } else if ( e.which === UP_ARROW ) {
-    // rotate piece
-  } else if ( e.which === DOWN_ARROW ) {
-    // go down faster
-  }
-} );
 
 playerPiece.piece = randomPiece();
 playerPiece.x = 5;
@@ -191,3 +198,4 @@ playerPiece.nextPiece = randomPiece();
 // playField.push( new Block( 3, 3, yellow ) );
 
 setInterval( drawField, 700 );
+  
