@@ -49,7 +49,7 @@ var playField = [];
 var blockSize = 20;
 var canvasHeight = blockSize * 22;
 var canvasWidth = blockSize * 10;
-var $canvas = $('<canvas id="playArea" width="' + canvasWidth + '" height="' + canvasHeight + '"></canvas>')
+var $canvas = $('<canvas id="playArea" width="' + canvasWidth + '" height="' + canvasHeight + '"></canvas>');
 $canvas.appendTo( $('body') );
 var ctx = $canvas[0].getContext('2d');
 
@@ -62,9 +62,11 @@ var drawBlock = function( x, y, color ) {
   ctx.closePath();
 };
 
-var drawField = function() {
+var drawField = function( xMod ) {
+  xMod = xMod || 0;
   ctx.clearRect( 0, 0, canvasWidth, canvasHeight );
-  gravity();
+  if( !xMod ) gravity();
+  playerPiece.x += xMod;
   drawPiece( playerPiece.piece, playerPiece.x, playerPiece.y );
   playField.forEach( function( block ) {
     drawBlock( block.x, block.y, block.color );
@@ -85,7 +87,7 @@ var Piece = function( blockMap, color ) {
 
 Piece.prototype.findLowestBlock = function() {
   var y = 0;
-  this.blockMap.forEach( function( coord ) { 
+  this.blockMap.forEach( function( coord ) {
     if( coord[1] > y ) {
       y = coord[1];
     }
@@ -148,26 +150,6 @@ var newPiece = function() {
   playerPiece.x = 4;
   playerPiece.y = 0;
   playerPiece.nextPiece = randomPiece();
-
-
-
-
-$( window ).on( "keypress", function(e) {
-  if( e.which === LEFT_ARROW ) {
-    // move piece left
-  } else if ( e.which === RIGHT_ARROW ) {
-    // move piece right
-  } else if ( e.which === UP_ARROW ) {
-    // rotate piece
-  } else if( e.which === DOWN_ARROW ) {
-    drawField();
-  }
-} );
-
-
-
-
-
 }; // handle getting a player a new piece and re-initializing it.
 
 // constantly move playerPiece downward.
@@ -186,7 +168,18 @@ playerPiece.x = 5;
 playerPiece.y = 0;
 playerPiece.nextPiece = randomPiece();
 
-
+$( window ).on( "keydown", function(e) {
+  console.log( e.which );
+  if( e.which === LEFT_ARROW ) {
+    drawField( -1 );
+  } else if ( e.which === RIGHT_ARROW ) {
+    drawField( 1 );
+  } else if ( e.which === UP_ARROW ) {
+    // rotate piece
+  } else if( e.which === DOWN_ARROW ) {
+    drawField();
+  }
+} );
 // drawPiece( long, 3, 3 );
 // drawPiece( square, 3, 20 );
 // drawPiece( leftL, 5, 6 );
